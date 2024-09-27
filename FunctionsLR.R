@@ -20,6 +20,7 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   n <- nrow(X) # save variable of nrows as n, number of observations
   p <- ncol(X) # save variable of ncols as p, number of predictors
   ntest <- nrow(Xt) # save variable of nrows of Xtest as ntest (num obs of Xtest)
+  K <- length(y)
   tX <- t(X) # compute transpose of X once to be accessed
   
   ## Check the supplied parameters as described. You can assume that X, Xt are matrices; y, yt are vectors; and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
@@ -52,9 +53,20 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   }
   
   # Check whether beta_init is NULL. If NULL, initialize beta with p x K matrix of zeroes. If not NULL, check for compatibility of dimensions with what has been already supplied.
+  if(is.null(beta_init)){
+    beta_mat <- matrix(nrow = p, ncol = K)
+  }
+  if((is.null(beta_init) == FALSE) && ((nrow(beta_init)!= p) || ncol(beta_init) != K)){
+    stop("Error: Check that the dimensions of beta are p x K.")
+  }
   
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
   ##########################################################################
+  fvec <- vector(mode = "numeric", length = nIter + 1) #initialize objective function 
+  pk <- exp(X %*% beta_init)/(RowSum(tX %*% beta_init))
+  # Calculate current objective value
+  Xb <-  X %*% beta_init
+  fvec[1] <-   sum(-y * (Xb) + log(1 + exp(Xb)))
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
