@@ -17,6 +17,7 @@ Xt <- as.matrix(letter_test[, -1])
 n <- nrow(X)
 p <- ncol(X)
 ntest <- nrow(Xt)
+length(Y)
 
 # Add column for an intercept to X and Xt
 X <- cbind(rep(1,n), X)
