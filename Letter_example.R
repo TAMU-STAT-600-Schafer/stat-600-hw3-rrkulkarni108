@@ -20,7 +20,7 @@ Xt <- cbind(rep(1,ntest), Xt) #add column of 1s to Xtest as first column
 source("FunctionsLR.R")
 
 # [ToDo] Try the algorithm LRMultiClass with lambda = 1 and 50 iterations. Call the resulting object out, i.e. out <- LRMultiClass(...)
-
+out <- LRMultiClass(X, Y, Xt, Yt, numIter = 50, lambda = 1)
 
 # The code below will draw pictures of objective function, as well as train/test error over the iterations
 plot(out$objective, type = 'o')
@@ -31,6 +31,13 @@ plot(out$error_test, type = 'o')
 
 # [ToDo] Use microbenchmark to time your code with lambda=1 and 50 iterations. To save time, only apply microbenchmark 5 times.
 
+library(microbenchmark)
+microbenchmark( out, times = 5)
+
+
+
 # [ToDo] Report the median time of your code from microbenchmark above in the comments below
 
 # Median time:  (in sec)
+
+
