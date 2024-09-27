@@ -13,6 +13,8 @@ Yt <- letter_test[, 1]
 Xt <- as.matrix(letter_test[, -1])
 
 # [ToDo] Make sure to add column for an intercept to X and Xt
+X <- cbind(rep(1,n), X) #add column of 1s to X as first column
+Xt <- cbind(rep(1,ntest), Xt) #add column of 1s to Xtest as first column
 
 # Source the LR function
 source("FunctionsLR.R")
