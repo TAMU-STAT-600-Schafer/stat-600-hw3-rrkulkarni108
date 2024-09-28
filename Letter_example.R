@@ -3,18 +3,22 @@
 # Load the letter data
 #########################
 # Training data
-letter_train <- read.table("Data/letter-train.txt", header = F, colClasses = "numeric")
+letter_train <- read.table("Data/letter-train.txt",
+                           header = F,
+                           colClasses = "numeric")
 Y <- letter_train[, 1]
 X <- as.matrix(letter_train[, -1])
 
 # Testing data
-letter_test <- read.table("Data/letter-test.txt", header = F, colClasses = "numeric")
+letter_test <- read.table("Data/letter-test.txt",
+                          header = F,
+                          colClasses = "numeric")
 Yt <- letter_test[, 1]
 Xt <- as.matrix(letter_test[, -1])
 
 # [ToDo] Make sure to add column for an intercept to X and Xt
-X <- cbind(rep(1,n), X) #add column of 1s to X as first column
-Xt <- cbind(rep(1,ntest), Xt) #add column of 1s to Xtest as first column
+X <- cbind(rep(1, n), X) #add column of 1s to X as first column
+Xt <- cbind(rep(1, ntest), Xt) #add column of 1s to Xtest as first column
 
 # Source the LR function
 source("FunctionsLR.R")
@@ -32,12 +36,10 @@ plot(out$error_test, type = 'o')
 # [ToDo] Use microbenchmark to time your code with lambda=1 and 50 iterations. To save time, only apply microbenchmark 5 times.
 
 library(microbenchmark)
-result <- microbenchmark( out, times = 5)
+result <- microbenchmark(out, times = 5)
 
 
 
 # [ToDo] Report the median time of your code from microbenchmark above in the comments below
 median(result$time)
-# Median time:  (in sec)
-
-
+# Median time: 0 (in sec)
