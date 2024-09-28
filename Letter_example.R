@@ -38,7 +38,11 @@ min(out$error_test) #26.3 for test
 # [ToDo] Use microbenchmark to time your code with lambda=1 and 50 iterations. To save time, only apply microbenchmark 5 times.
 
 library(microbenchmark)
-result <- microbenchmark(LRMultiClass(X, Y, Xt, Yt, numIter = 50, lambda = 1), LRMultiClass(X, Y, Xt, Yt, numIter = 100, lambda = 1), times = 5)
+result <- microbenchmark(
+  LRMultiClass(X, Y, Xt, Yt, numIter = 50, lambda = 1),
+  LRMultiClass(X, Y, Xt, Yt, numIter = 100, lambda = 1),
+  times = 5
+)
 print(result)
 
 #result2 <- microbenchmark(out, out1, times = 100)
@@ -48,7 +52,3 @@ print(result)
 # [ToDo] Report the median time of your code from microbenchmark above in the comments below
 median(result$time)
 # Median time: 4.109224  (in sec)
-
-
-
-
