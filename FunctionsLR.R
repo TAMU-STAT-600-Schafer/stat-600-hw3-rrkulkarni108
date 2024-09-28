@@ -27,23 +27,25 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   ## Check the supplied parameters as described. You can assume that X, Xt are matrices; y, yt are vectors; and numIter, eta, lambda are scalars. You can assume that beta_init is either NULL (default) or a matrix.
   ###################################
   # Check that the first column of X is 1s, if not - display appropriate message and stop execution.
-  # if((X[ , 1] != rep(1,n)) ){
-  #   stop("Error: check that the first column of X is 1s.")
-  # }
+  if(any(X[ , 1] != 1) ){
+    stop("Error: check that the first column of X is 1s.")
+  }
   # Check that the first column of Xt is 1s, if not - display appropriate message and stop execution.
-  if(sum(Xt[ , 1] != rep(1,ntest)) > 0 ){
+  if(any(Xt[ , 1] != 1) ){
     stop("Error: check that the first column of X test is 1s.")
   }
   # Check for compatibility of dimensions between X and Y
-  # if(n != nrow(Y)){
-  #   stop("Error: check that the dimensions of X and Y are compatible for matrix multiplication.")
-  # }
-  # # Check for compatibility of dimensions between Xt and Yt - CHECK THIS!!
-  # if(ntest != nrow(Ytest)){
-  #   stop("Error: check that the dimensions of Xtest and Ytest are compatible for matrix multiplication.")
-  # }
+  if(n != length(y)){
+    stop("Error: check that the dimensions of X and Y are compatible.")
+  }
+  # # Check for compatibility of dimensions between Xt and Yt 
+  if(ntest != length(yt)){
+    stop("Error: check that the dimensions of Xtest and Ytest are compatible.")
+  }
   # Check for compatibility of dimensions between X and Xt
-  
+  if(p != ptest){
+    stop("Error: check that the dimensions of X and Xt are compatible.")
+  }
   # Check eta is positive
   if(eta <= 0){
     stop("Error: Eta must be positive! Change your value of eta.")
