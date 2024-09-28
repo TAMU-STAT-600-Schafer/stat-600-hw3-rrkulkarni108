@@ -74,14 +74,14 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   exp_Xtb <- exp( Xt %*% beta_init) #intermediate storage of exp(Xb)
   pk_test <- exp_Xtb/(rowSums(exp_Xtb)) #calculate corresponding pk_test
   
-  train_class <-  apply(exp_Xb, 1, which.min) #assign class for training
+  train_class <-  apply(pk, 1, which.max) -1 #assign class for training with highest probability
   #print(train_class)
-  train_err[1] <- 100 * mean(y != train_class) #get error when class is not the true one for train
+  train_err[1] <- 100 * mean(y != train_class) #get %error when class is not the true one for train
   #print(train_err)
   
-  test_class <-  apply(exp_Xtb, 1, which.max) - 1 #assign class for testing
+  test_class <-  apply(pk_test, 1, which.max) - 1 #assign class for testing with highest probability
   #print(test_class)
-  test_err[1] <- 100 * mean(y != train_class) #get error when class is not the true one for test
+  test_err[1] <- 100 * mean(y != train_class) #get %error when class is not the true one for test
   #print(test_err)
   
   #indicator function 
@@ -92,13 +92,15 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   }
   
   # Calculate current objective value
-  fobj[1] <-   (-sum(ind_train * log(exp_Xb)) + (lambda/2) + sum(beta_init^2))
+  fobj[1] <-   (-sum(ind_train * log(pk)) + (lambda/2) + sum(beta_init^2))
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
- 
-  # Within one iteration: perform the update, calculate updated objective function and training/testing errors in %
-  
+  for(k in 1:numIter){
+    W <- pk*(1-pk) #as given formula in the pdf
+  }
+    # Within one iteration: perform the update, calculate updated objective function and training/testing errors in %
+    # beta update
   
   ## Return output
   ##########################################################################
