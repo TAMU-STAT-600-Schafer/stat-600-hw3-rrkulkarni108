@@ -49,11 +49,3 @@ median(result$time)
 # Median time: 0 (in sec)
 
 
-Rprof(gc.profiling = TRUE) # start monitoring
-invisible(LRMultiClass(X, Y, Xt, Yt, numIter = 50, lambda = 1)) # suppress function output
-Rprof(NULL) # stop monitoring
-summaryRprof()
-
-
-library(profvis)
-profvis(LRMultiClass(X, Y, Xt, Yt, numIter = 50, lambda = 1))
