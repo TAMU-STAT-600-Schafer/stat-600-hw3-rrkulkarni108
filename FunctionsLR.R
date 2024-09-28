@@ -74,9 +74,16 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   exp_Xtb <- exp( Xt %*% beta_init) #intermediate storage of exp(Xb)
   pk_test <- exp_Xtb/(rowSums(exp_Xtb)) #calculate corresponding pk_test
   
+  train_class = apply(exp_Xb, 1, which.min) #assign class for training
+  #print(train_class)
+  mean(y != train_class) #get error when class is not the true one for train
+  
+  trest_class = apply(exp_Xtb, 1, which.min) #assign class for testing
+  #print(test_class)
+  mean(y != train_class) #get error when class is not the true one for test
+  
   
   # Calculate current objective value
-  
   fobj[1] <-   -sum(y * log(exp_Xb)) + (lambda/2) + sum(beta_init^2)
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
