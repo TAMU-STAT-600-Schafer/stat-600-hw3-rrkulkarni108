@@ -27,7 +27,7 @@ LRMultiClass <- function(X,
   n <- nrow(X) # save variable of nrows as n, number of observations
   p <- ncol(X) # save variable of ncols as p, number of predictors
   ntest <- nrow(Xt) # save variable of nrows of Xtest as ntest (num obs of Xtest)
-  K <- length(unique(y)) #number of class labels 
+  K <- length(unique(y)) #number of class labels
   #print(K)
   tX <- t(X) # compute transpose of X once to be accessed
   X <- as.matrix(X)
