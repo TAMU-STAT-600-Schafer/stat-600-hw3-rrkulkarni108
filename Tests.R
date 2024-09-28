@@ -29,3 +29,4 @@ Xt <- cbind(rep(1,ntest), Xt)
 sum((X[ , 1] == rep(1,n)) )== n #check first column of X
 sum(Xt[ , 1] == rep(1,ntest)) == ntest #check first column of Xt
 LRMultiClass(X,Y, Xt, Yt, numIter = 50, eta = 0.1, lambda = 1, beta_init = NULL)
+
