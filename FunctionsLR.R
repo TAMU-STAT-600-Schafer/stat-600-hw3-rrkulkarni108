@@ -78,13 +78,19 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   #print(train_class)
   mean(y != train_class) #get error when class is not the true one for train
   
-  trest_class = apply(exp_Xtb, 1, which.min) #assign class for testing
+  test_class = apply(exp_Xtb, 1, which.min) #assign class for testing
   #print(test_class)
   mean(y != train_class) #get error when class is not the true one for test
   
+  #indicator function 
+  Y_list = sort(unique(y)) #get the distinct Y's and sort them to get order
+  ind_train = matrix(0, nrow(X), length(Y_list)) #initialize empty matrix for indicator for Y
+  for(k in 1:ncol(beta_init)){ # go through the beta obj and if Y is equal to the class indicator is 1
+    ind_train[Y_list[k] == y, k] = 1 
+  }
   
   # Calculate current objective value
-  fobj[1] <-   -sum(y * log(exp_Xb)) + (lambda/2) + sum(beta_init^2)
+  fobj[1] <-   -sum(ind_train * log(exp_Xb)) + (lambda/2) + sum(beta_init^2)
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
