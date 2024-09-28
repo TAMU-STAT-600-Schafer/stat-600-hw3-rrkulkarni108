@@ -101,6 +101,11 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   }
     # Within one iteration: perform the update, calculate updated objective function and training/testing errors in %
     # beta update
+    for(j in 1:ncol(beta_init)){
+      Hkk_inv  <- solve(crossprod(X, X * W[, j]) + (lambda * diag(rep(1, ncol(X))))) #X^T *W_k* X + lambda*I
+      #beta_k^(t+1) = beta_k^(t) + eta(Hkk_inv) *[X^T *pk *1(Y = k) + lambda*beta_k^(t)]
+      beta_init[, j] <-  beta_init[, j] - eta * Hkk_inv %*% ((tX %*% (pk[, j]-ind_train[, j])) + lambda * beta_init[, j]) #damped newton's update
+    }
   
   ## Return output
   ##########################################################################
