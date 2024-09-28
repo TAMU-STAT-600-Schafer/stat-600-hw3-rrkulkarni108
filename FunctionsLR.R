@@ -152,7 +152,7 @@ LRMultiClass <- function(X,
   # objective - (numIter + 1) length vector of objective values of the function that we are minimizing at each iteration (+ starting value)
   return(
     list(
-      beta = beta,
+      beta = beta_init,
       error_train = error_train,
       error_test = error_test,
       objective =  objective
