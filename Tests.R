@@ -51,4 +51,3 @@ summaryRprof()
 
 library(profvis)
 profvis(LRMultiClass(X, Y, Xt, Yt, numIter = 50, lambda = 1))
-
