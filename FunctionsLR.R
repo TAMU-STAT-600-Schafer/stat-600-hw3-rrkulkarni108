@@ -66,8 +66,15 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   test_err = rep(0, numIter+1) #testing error
   fobj = rep(0, numIter+1) # initialize objective function 
   
-  exp_Xb <- exp( X %*% beta_init)
-  pk <- exp_Xb/(rowSums(exp_Xb))
+  # pk value for training data
+  exp_Xb <- exp( X %*% beta_init) #intermediate storage of exp(Xb)
+  pk <- exp_Xb/(rowSums(exp_Xb)) #calculate corresponding pk
+  
+  # pk value for testing data
+  exp_Xtb <- exp( Xt %*% beta_init) #intermediate storage of exp(Xb)
+  pk_test <- exp_Xtb/(rowSums(exp_Xtb)) #calculate corresponding pk_test
+  
+  
   # Calculate current objective value
   
   fobj[1] <-   -sum(y * log(exp_Xb)) + (lambda/2) + sum(beta_init^2)
