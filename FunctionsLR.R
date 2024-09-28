@@ -27,7 +27,8 @@ LRMultiClass <- function(X,
   n <- nrow(X) # save variable of nrows as n, number of observations
   p <- ncol(X) # save variable of ncols as p, number of predictors
   ntest <- nrow(Xt) # save variable of nrows of Xtest as ntest (num obs of Xtest)
-  K <- length(unique(y))
+  K <- length(unique(y)) #number of class labels 
+  #print(K)
   tX <- t(X) # compute transpose of X once to be accessed
   X <- as.matrix(X)
   
@@ -111,7 +112,7 @@ LRMultiClass <- function(X,
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
   for (k in 1:numIter) {
-    W <- pk * (1 - pk) #as given formula in the pdf
+    W <- pk * (1 - pk) # as given formula in the pdf
     
     # Within one iteration: perform the update, calculate updated objective function and training/testing errors in %
     # beta update
@@ -119,9 +120,11 @@ LRMultiClass <- function(X,
       Hkk_inv  <- solve(crossprod(X, X * W[, j]) + (lambda * diag(rep(1, ncol(
         X
       ))))) #X^T *W_k* X + lambda*I
+      #print((Hkk_inv))
       #beta_k^(t+1) = beta_k^(t) + eta(Hkk_inv) *[X^T *pk *1(Y = k) + lambda*beta_k^(t)]
       beta_init[, j] <-  beta_init[, j] - eta * Hkk_inv %*% ((tX %*% (pk[, j] -
                                                                         ind_train[, j])) + lambda * beta_init[, j]) #damped newton's update
+      #print(beta_init[, j])
     }
     # pk value for training data
     exp_Xb <- exp(X %*% beta_init) #intermediate storage of exp(Xb)
@@ -142,6 +145,7 @@ LRMultiClass <- function(X,
     #print(error_test)
     objective[k + 1] <-   (-sum(ind_train * log(pk)) + (lambda / 2) * sum(beta_init ^
                                                                             2))
+    #print(objective[k + 1])
   }
   
   ## Return output

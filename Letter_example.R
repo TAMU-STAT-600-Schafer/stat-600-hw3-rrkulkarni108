@@ -40,9 +40,20 @@ library(microbenchmark)
 result <- microbenchmark(out, out1, times = 5)
 print(result)
 
-result2 <- microbenchmark(out, out1, times = 100)
-print(result2)
+#result2 <- microbenchmark(out, out1, times = 100)
+#print(result2)
+
 
 # [ToDo] Report the median time of your code from microbenchmark above in the comments below
 median(result$time)
 # Median time: 0 (in sec)
+
+
+Rprof(gc.profiling = TRUE) # start monitoring
+invisible(LRMultiClass(X, Y, Xt, Yt, numIter = 50, lambda = 1)) # suppress function output
+Rprof(NULL) # stop monitoring
+summaryRprof()
+
+
+library(profvis)
+profvis(LRMultiClass(X, Y, Xt, Yt, numIter = 50, lambda = 1))
