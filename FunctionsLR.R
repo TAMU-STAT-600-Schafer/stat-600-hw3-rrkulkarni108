@@ -30,7 +30,7 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
     stop("Error: check that the first column of X is 1s.")
   }
   # Check that the first column of Xt is 1s, if not - display appropriate message and stop execution.
-  if((Xt[ , 1] != rep(1,ntest)) ){
+  if(sum(Xt[ , 1] != rep(1,ntest)) > 0 ){
     stop("Error: check that the first column of X test is 1s.")
   }
   # Check for compatibility of dimensions between X and Y
@@ -62,9 +62,9 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
   ##########################################################################
-  train_err = rep(0, numIter+1) # training error
-  test_err = rep(0, numIter+1) #testing error
-  fobj = rep(0, numIter+1) # initialize objective function 
+  train_err <- rep(0, numIter+1) # training error
+  test_err <- rep(0, numIter+1) #testing error
+  fobj <- rep(0, numIter+1) # initialize objective function 
   
   # pk value for training data
   exp_Xb <- exp( X %*% beta_init) #intermediate storage of exp(Xb)
@@ -74,23 +74,25 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   exp_Xtb <- exp( Xt %*% beta_init) #intermediate storage of exp(Xb)
   pk_test <- exp_Xtb/(rowSums(exp_Xtb)) #calculate corresponding pk_test
   
-  train_class = apply(exp_Xb, 1, which.min) #assign class for training
+  train_class <-  apply(exp_Xb, 1, which.min) #assign class for training
   #print(train_class)
-  mean(y != train_class) #get error when class is not the true one for train
+  train_err[1] <- 100 * mean(y != train_class) #get error when class is not the true one for train
+  #print(train_err)
   
-  test_class = apply(exp_Xtb, 1, which.min) #assign class for testing
+  test_class <-  apply(exp_Xtb, 1, which.max) - 1 #assign class for testing
   #print(test_class)
-  mean(y != train_class) #get error when class is not the true one for test
+  test_err[1] <- 100 * mean(y != train_class) #get error when class is not the true one for test
+  #print(test_err)
   
   #indicator function 
-  Y_list = sort(unique(y)) #get the distinct Y's and sort them to get order
-  ind_train = matrix(0, nrow(X), length(Y_list)) #initialize empty matrix for indicator for Y
+  Y_list  <-  sort(unique(y)) #get the distinct Y's and sort them to get order
+  ind_train <-  matrix(0, nrow(X), length(Y_list)) #initialize empty matrix for indicator for Y
   for(k in 1:ncol(beta_init)){ # go through the beta obj and if Y is equal to the class indicator is 1
     ind_train[Y_list[k] == y, k] = 1 
   }
   
   # Calculate current objective value
-  fobj[1] <-   -sum(ind_train * log(exp_Xb)) + (lambda/2) + sum(beta_init^2)
+  fobj[1] <-   (-sum(ind_train * log(exp_Xb)) + (lambda/2) + sum(beta_init^2))
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
