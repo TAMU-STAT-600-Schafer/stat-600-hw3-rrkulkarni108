@@ -17,8 +17,8 @@ Yt <- letter_test[, 1]
 Xt <- as.matrix(letter_test[, -1])
 
 # [ToDo] Make sure to add column for an intercept to X and Xt
-X <- cbind(rep(1, n), X) #add column of 1s to X as first column
-Xt <- cbind(rep(1, ntest), Xt) #add column of 1s to Xtest as first column
+X <- cbind(rep(1, nrow(X)), X) #add column of 1s to X as first column
+Xt <- cbind(rep(1, nrow(Xt)), Xt) #add column of 1s to Xtest as first column
 
 # Source the LR function
 source("FunctionsLR.R")
@@ -33,11 +33,12 @@ plot(out$error_train, type = 'o')
 plot(out$error_test, type = 'o')
 
 # Feel free to modify the code above for different lambda/eta/numIter values to see how it affects the convergence as well as train/test errors
-
+min(out$error_train) #21.6 for train
+min(out$error_test) #26.3 for test
 # [ToDo] Use microbenchmark to time your code with lambda=1 and 50 iterations. To save time, only apply microbenchmark 5 times.
 
 library(microbenchmark)
-result <- microbenchmark(out, out1, times = 5)
+result <- microbenchmark(LRMultiClass(X, Y, Xt, Yt, numIter = 50, lambda = 1), LRMultiClass(X, Y, Xt, Yt, numIter = 100, lambda = 1), times = 5)
 print(result)
 
 #result2 <- microbenchmark(out, out1, times = 100)
@@ -46,6 +47,8 @@ print(result)
 
 # [ToDo] Report the median time of your code from microbenchmark above in the comments below
 median(result$time)
-# Median time: 0 (in sec)
+# Median time: 4.109224  (in sec)
+
+
 
 
