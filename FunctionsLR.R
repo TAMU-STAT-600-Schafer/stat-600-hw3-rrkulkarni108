@@ -104,10 +104,13 @@ LRMultiClass <- function(X,
     # go through the beta obj and if Y is equal to the class indicator is 1
     ind_train[Y_list[k] == y, k] = 1
   }
+  #print(ind_train)
   
   # Calculate current objective value
   objective[1] <-   (-sum(ind_train * log(pk)) + (lambda / 2) * sum(beta_init ^
                                                                       2))
+  # print(-sum(ind_train * log(pk)))
+  # print(class(-sum(ind_train * log(pk))))
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
@@ -145,7 +148,8 @@ LRMultiClass <- function(X,
     #print(error_test)
     objective[k + 1] <-   (-sum(ind_train * log(pk)) + (lambda / 2) * sum(beta_init ^
                                                                             2))
-    #print(objective[k + 1])
+    # print(k)
+    # print(objective[k + 1])
   }
   
   ## Return output
