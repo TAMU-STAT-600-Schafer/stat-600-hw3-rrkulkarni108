@@ -62,11 +62,15 @@ LRMultiClass <- function(X, y, Xt, yt, numIter = 50, eta = 0.1, lambda = 1, beta
   
   ## Calculate corresponding pk, objective value f(beta_init), training error and testing error given the starting point beta_init
   ##########################################################################
-  fvec <- vector(mode = "numeric", length = nIter + 1) #initialize objective function 
-  pk <- exp(X %*% beta_init)/(RowSum(tX %*% beta_init))
+  train_err = rep(0, numIter+1) # training error
+  test_err = rep(0, numIter+1) #testing error
+  fobj = rep(0, numIter+1) # initialize objective function 
+  
+  exp_Xb <- exp( X %*% beta_init)
+  pk <- exp_Xb/(rowSums(exp_Xb))
   # Calculate current objective value
-  Xb <-  X %*% beta_init
-  fvec[1] <-   sum(-y * (Xb) + log(1 + exp(Xb)))
+  
+  fobj[1] <-   -sum(y * log(exp_Xb)) + (lambda/2) + sum(beta_init^2)
   
   ## Newton's method cycle - implement the update EXACTLY numIter iterations
   ##########################################################################
